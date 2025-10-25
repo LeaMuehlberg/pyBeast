@@ -3,6 +3,7 @@ class Position:
         self.x = x
         self.y = y
 
-    def movePosition(self, deltax, deltay, length, height):
-        self.x = (self.x + deltax) % length
+    def move_position(self, deltax, deltay, length, height):
+        # falls es über den rand geht: %
+        self.x = (self.x + deltax) % length 
         self.y = (self.y + deltay) % height

@@ -1,4 +1,7 @@
 import random
+from Food import Food
+from Position import Position
+from Beast import Beast
 
 class World:
     def __init__ (self, length, height):
@@ -6,18 +9,30 @@ class World:
         self.height = height
         self.cells = [[None for _ in range(length)] for _ in range(height)]
 
-    def spawn_food(self, size):
-        free_cells = [(x,y) for y in range (self.height) for x in range(self.length) if self.cells[x][y] is None]
-        for i in range(size):
-            if len(free_cells) == 0:
-                break
-            x,y = random.choice(free_cells)
-            Food(Position(x, y), self)
-            free_cells.remove((x,y))
+    def get_length(self):
+        return self.length
+    
+    def get_height(self):
+        return self.height
 
-    def print_ascii(self):
+    # spawnt nur ein food oder mehr?
+    def spawn_food(self):
+        free_cells = [(x,y) for y in range (self.height) for x in range(self.length) if self.cells[y][x] is None]
+        if not free_cells: 
+            return
+        x, y = random.choice(free_cells)
+        food = Food(Position(x, y), self, 10)
+        return food
+
+    def print_world(self):
         for row in self.cells:
-            print("".join(
-                "." if r is None else "*" if isinstance(r, Food) else "B" for r in row
-            ))
+            line = ""
+            for r in row:
+                if r is None:
+                    line += "."
+                elif isinstance(r, Beast):
+                    line += "B"
+                else:
+                    line += "*"
+            print(line)
         print()
